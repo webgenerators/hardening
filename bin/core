@@ -1,0 +1,46 @@
+#!/bin/bash
+
+if [ "$EUID" -ne 0 ]; then
+    echo "This script should not be run using sudo or as the root user"
+    exit 1
+fi
+
+BIN=$(readlink -f $BASE/bin)
+LIB=$(readlink -f $BASE/lib)
+
+LIBFILES=$(find $LIB -type f -name "*.sh")
+BINFILES=$(find $BIN -type f)
+
+DIVIDER="==============================="
+
+clear
+
+. "$BIN/helper"
+. "$BIN/os"
+
+if [ $# -eq 0 ]
+then
+    . "$BIN/menu"
+else
+    for file in $LIBFILES
+    do
+        . $file
+    done;
+
+    echo "$DIVIDER"
+    echo "       Hardening Manager"
+    echo "$DIVIDER"
+    if [ "$1" == "check" ]; then
+        checkAll
+    else
+        checkOne $1 $2
+    fi
+    echo "$DIVIDER"
+
+#    while [ $# -gt 0 ]
+#    do
+#        echo $1
+#        shift
+#    done
+fi
+
