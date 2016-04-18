@@ -48,14 +48,14 @@ setValue()
     read -e -i "$setName" -p "Set $1 [$setVar]: " input
     setVar="${input:-$setVar}"
 
-    sed -i "/^#.*$setVar/s/^#//" $3
-    sed -i "/^;.*$setVar/s/^;//" $3
-    sed -i "s/\($1* *\).*/\1$setVar/" $3
+    sed -i "/^#.*$setVar/s/^#//" "$3"
+    sed -i "/^;.*$setVar/s/^;//" "$3"
+    sed -i "s/\($1* *\).*/\1$setVar/" "$3"
 }
 
 getValue()
 {
-    echo $(grep -Po "(?<=^$1 ).*" $2)
+    grep -Po "(?<=^$1 ).*" "$2"
 }
 
 ##
@@ -67,7 +67,7 @@ getValue()
 ##
 checkValue()
 {
-    local tmpVar=$(getValue $1 $3)
+    local tmpVar=$(getValue "$1" "$3")
 
     if [ "$tmpVar" == "$2" ]; then
         echo 0
@@ -78,21 +78,21 @@ checkValue()
 
 checkVerbose()
 {
-    local tmpVar=$(checkValue $1 $2 $3)
-    local getVar=$(getValue $1 $3)
+    local tmpVar=$(checkValue "$1" "$2" "$3")
+    local getVar=$(getValue "$1" "$3")
 
     if [ "$tmpVar" == "1" ]; then
-        echoOK $1 $getVar
+        echoOK "$1" "$getVar"
     else
-        echoNO $1 $getVar
+        echoNO "$1" "$getVar"
     fi
 }
 
 checkHost()
 {
-    local tmpVar=$(ping -c 1 $1 2>&1 | grep -c -E "(unknown|unreachable)")
+    local tmpVar=$(ping -c 1 "$1" 2>&1 | grep -c -E "(unknown|unreachable)")
 
-    if [ $tmpVar -eq 0 ]; then
+    if [ "$tmpVar" -eq 0 ]; then
         echo 1
     else
         echo 0
@@ -137,7 +137,7 @@ checkOne()
 
 checkCommand()
 {
-    if which $1 >/dev/null; then
+    if which "$1" >/dev/null; then
         echo 1
     else
         echo 0
@@ -148,7 +148,7 @@ checkInstalled()
 {
     local tmpVar=$(dpkg-query -l $1 2>&1 | grep -c -E "(no packages)")
 
-    if [ $tmpVar -eq 0 ]; then
+    if [ "$tmpVar" -eq 0 ]; then
         echo 1
     else
         echo 0

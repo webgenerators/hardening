@@ -2,4 +2,4 @@
 
 BASE=$(pwd)
 
-. bin/core
+. src/core

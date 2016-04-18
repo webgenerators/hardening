@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo $DIVIDER
+echo "$DIVIDER"
 echo " Welcome to Hardening Manager!"
 
 for file in $LIBFILES
@@ -8,22 +8,21 @@ do
     filebase=$(basename "$file")
     filename="${filebase%.*}"
 
-    . $file
+    . "$file"
 
-    echo $DIVIDER
-    echo "# $($filename::name)"
-    echo "# $($filename::description)"
+    echo "$DIVIDER"
+    echo "#" "$($filename::name)"
+    echo "#" "$($filename::description)"
 
 #    tmpCommands=$($filename::help)
 #    join "|" "${tmpCommands[@]}"
 
     tmpCommands=""
-    for cmd in $($filename::help)
+    for cmd in $("$filename::help")
     do
 #        echo "- $filename $cmd"
         tmpCommands="$tmpCommands|$cmd"
     done;
     echo "* Usage: $filename {${tmpCommands:1}}"
 done;
-echo $DIVIDER
-
+echo "$DIVIDER"
