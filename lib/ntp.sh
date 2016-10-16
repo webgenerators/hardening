@@ -29,16 +29,16 @@ ntp::check()
 
     if [ "$isNtpEnabled" == "1" ];
     then
-        echoOK "NTP enabled" $ntpEnabled
+        echoOK "NTP enabled" "$ntpEnabled"
     else
-        echoNO "NTP enabled" $ntpEnabled
+        echoNO "NTP enabled" "$ntpEnabled"
     fi
 
     if [ "$isNtpSynchron" == "1" ];
     then
-        echoOK "NTP synchronized" $ntpSynchron
+        echoOK "NTP synchronized" "$ntpSynchron"
     else
-        echoNO "NTP synchronized" $ntpSynchron
+        echoNO "NTP synchronized" "$ntpSynchron"
     fi
 }
 

@@ -3,7 +3,14 @@
 uppers=ABCDEFGHIJKLMNOPQRSTUVWXYZ
 lowers=abcdefghijklmnopqrstuvwxyz
 
-function join { local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}"; }
+join()
+{
+    local d=$1;
+    shift;
+    echo -n "$1";
+    shift;
+    printf "%s" "${@/#/$d}";
+}
 
 echoOK()
 {
@@ -70,11 +77,30 @@ checkValue()
     local tmpVar=$(getValue "$1" "$3")
 
     if [ "$tmpVar" == "$2" ]; then
-        echo 0
-    else
         echo 1
+    else
+        echo 0
     fi
 }
+
+##
+# checkNotValue
+#
+# $1 - Value name
+# $2 - Value bad
+# $3 - File path
+##
+checkNotValue()
+{
+    local tmpVar=$(getValue "$1" "$3")
+
+    if [ -z "$tmpVar" -a -z "${2// }" ] || [ "$tmpVar" != "$2" ]; then
+        echo 1
+    else
+        echo 0
+    fi
+}
+
 
 checkVerbose()
 {
@@ -82,6 +108,18 @@ checkVerbose()
     local getVar=$(getValue "$1" "$3")
 
     if [ "$tmpVar" == "1" ]; then
+        echoOK "$1" "$getVar"
+    else
+        echoNO "$1" "$getVar"
+    fi
+}
+
+checkNotVerbose()
+{
+    local tmpVar=$(checkNotValue "$1" "$2" "$3")
+    local getVar=$(getValue "$1" "$3")
+
+    if [ "$tmpVar" != "1" ]; then
         echoOK "$1" "$getVar"
     else
         echoNO "$1" "$getVar"

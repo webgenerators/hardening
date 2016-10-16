@@ -28,10 +28,12 @@ ssh::check()
 #    countSum=0
 
     # Port check
-    checkVerbose "Port" "22" $CONFIG_FILE_SSH
-    checkVerbose "PermitRootLogin" "yes" $CONFIG_FILE_SSH
-    checkVerbose "PasswordAuthentication" "yes" $CONFIG_FILE_SSH
-    checkVerbose "X11Forwarding" "yes" $CONFIG_FILE_SSH
+    checkNotVerbose "Port" "22" $CONFIG_FILE_SSH
+    checkVerbose "Protocol" "2" $CONFIG_FILE_SSH
+    checkVerbose "PermitRootLogin" "no" $CONFIG_FILE_SSH
+    checkVerbose "PasswordAuthentication" "no" $CONFIG_FILE_SSH
+    checkNotVerbose "AllowUsers" "" $CONFIG_FILE_SSH
+    checkVerbose "X11Forwarding" "no" $CONFIG_FILE_SSH
 
 #    countStop
 #    countOk
